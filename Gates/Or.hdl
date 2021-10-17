@@ -1,0 +1,17 @@
+/**
+ * Or gate:
+ * result = 1 if (x==1 or y==1),
+ *          0 otherwise
+ */
+
+CHIP Or {
+    IN x, y;
+    OUT out;
+
+    PARTS:
+	Not(x=x, out=notx);
+	Not(x=y, out=noty);
+	And(x=notx, y=noty, out=notxAndnoty);
+	Not(x=notxAndnoty, out=out);
+
+}

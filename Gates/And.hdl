@@ -1,0 +1,15 @@
+/**
+ * And gate:
+ * out = 1 if (x == 1 and y == 1)
+ *          0 otherwise
+ */
+
+CHIP And {
+    IN x, y;
+    OUT out;
+
+    PARTS:
+	Nand(x=x, y=y, out=xNandy);
+	Not(x=xNandy, out=out);
+
+}

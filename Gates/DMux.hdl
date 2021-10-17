@@ -1,0 +1,15 @@
+/**
+ * Demultiplexor.
+ * {x,y} = {in,0} if sel == 0
+ *         {0,in} if sel == 1
+ */
+
+CHIP DMux {
+    IN in, sel;
+    OUT x, y;
+
+    PARTS:
+	Not(x=sel, out=notsel);
+	And(x=sel, y=in, out=y);
+	And(x=notsel, y=in, out=x);
+}
