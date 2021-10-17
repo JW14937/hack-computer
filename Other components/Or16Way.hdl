@@ -1,0 +1,27 @@
+/**
+ * 8-way or gate:
+ * out = x[0] or x[1] or ... or x[15].
+ */
+
+CHIP Or16Way {
+    IN x[16];
+    OUT out;
+
+    PARTS:
+	Or(x=x[0], y=x[1], out=or01);
+	Or(x=or01, y=x[2], out=or02);
+	Or(x=or02, y=x[3], out=or03);
+	Or(x=or03, y=x[4], out=or04);
+	Or(x=or04, y=x[5], out=or05);
+	Or(x=or05, y=x[6], out=or06);
+	Or(x=or06, y=x[7], out=or07);
+	Or(x=or07, y=x[8], out=or08);
+	Or(x=or08, y=x[9], out=or09);
+	Or(x=or09, y=x[10], out=or010);
+	Or(x=or010, y=x[11], out=or011);
+	Or(x=or011, y=x[12], out=or012);
+	Or(x=or012, y=x[13], out=or013);
+	Or(x=or013, y=x[14], out=or014);
+	Or(x=or014, y=x[15], out=out);
+
+}

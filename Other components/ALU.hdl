@@ -1,0 +1,39 @@
+/**
+ * The ALU. Computes one of the following functions:
+ * x+y, x-y, y-x, 0, 1, -1, x, y, -x, -y, !x, !y,
+ * x+1, y+1, x-1, y-1, x&y, x|y on two 16-bit inputs,
+ * according to 6 input bits denoted zx,nx,zy,ny,f,no.
+ * The bit-combinations that yield each function are
+ * documented in the book. In addition, the ALU
+ * computes two 1-bit outputs: if the ALU output
+ * is 0, zr is set to 1; otherwise zr is set to 0;
+ * If out<0, ng is set to 1; otherwise ng is set to 0.
+ */
+
+CHIP ALU {
+    IN x[16], y[16], zx, nx, zy, ny, f, no;
+    OUT out[16], zr, ng;
+
+    PARTS:
+	Mux16(x=x, y[0..15]=false, sel=zx, out=x1);
+	Not16(x=x1, out=x1Not);
+	Mux16(x=x1, y=x1Not, sel=nx, out=xPreset);
+
+	Mux16(x=y, y[0..15]=false, sel=zy, out=y1);
+	Not16(x=y1, out=y1Not);
+	Mux16(x=y1, y=y1Not, sel=ny, out=yPreset);
+
+	Add16(x=xPreset, y=yPreset, out=xAddy);
+	And16(x=xPreset, y=yPreset, out=xAndy);
+	Mux16(x=xAndy, y=xAddy, sel=f, out=xFy);
+	
+	Not16(x=xFy, out=NotxFy);
+	Mux16(x=xFy, y=NotxFy, sel=no, out=outBuff);
+	Mux16(x=xFy, y=NotxFy, sel=no, out=out);
+
+	Or16Way(x=outBuff, out=orOut);
+	Not(x=orOut, out=zr);
+
+	And16(x=outBuff, y[0..15]=true, out[15]=ng, out[0..14]=drop);
+
+}
